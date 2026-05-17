@@ -1,0 +1,8 @@
+runpod
+unsloth
+transformers
+accelerate
+bitsandbytes
+sentencepiece
+torch
+torchaudio
