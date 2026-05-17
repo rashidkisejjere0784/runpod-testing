@@ -26,6 +26,9 @@ RUN git clone https://github.com/coqui-ai/TTS /tmp/TTS \
     && uv pip install --system -e ".[all]" \
     && rm -rf /tmp/TTS/.git
 
+# Pin transformers to version compatible with XTTS
+RUN uv pip install --system "transformers==4.37.2"
+
 # Install torch and runpod
 RUN uv pip install --system runpod
 
