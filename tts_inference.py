@@ -1,5 +1,7 @@
 import base64
 import io
+import os
+import tempfile
 import torch
 import runpod
 
@@ -25,27 +27,29 @@ def tts_handler(event):
         load_model()
 
     input_data = event.get("input", {})
-
     text = input_data.get("text")
     language = input_data.get("language", "en")
-    speaker = input_data.get("speaker", "Claribel Dervla")  # default XTTS-v2 speaker
+    speaker = input_data.get("speaker", "Claribel Dervla")
 
     if not text:
         return {"error": "No text provided."}
 
-    audio_buffer = io.BytesIO()
+    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
+        tmp_path = tmp.name
 
-    model.tts_to_file(
-        text=text,
-        speaker=speaker,
-        language=language,
-        file_path=audio_buffer,
-        pipe_out=True,
-    )
+    try:
+        model.tts_to_file(
+            text=text,
+            speaker=speaker,
+            language=language,
+            file_path=tmp_path,
+        )
 
-    audio_base64 = base64.b64encode(
-        audio_buffer.getvalue()
-    ).decode("utf-8")
+        with open(tmp_path, "rb") as f:
+            audio_base64 = base64.b64encode(f.read()).decode("utf-8")
+
+    finally:
+        os.unlink(tmp_path)
 
     return {
         "speaker": speaker,
@@ -54,6 +58,4 @@ def tts_handler(event):
     }
 
 
-runpod.serverless.start(
-    {"handler": tts_handler}
-)
+runpod.serverless.start({"handler": tts_handler})
