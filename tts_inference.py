@@ -57,5 +57,4 @@ def tts_handler(event):
         "audio_base64": audio_base64,
     }
 
-
 runpod.serverless.start({"handler": tts_handler})
