@@ -1,8 +1,4 @@
+TTS==0.22.0
+torch==2.2.0+cu121
+torchaudio==2.2.0+cu121
 runpod
-unsloth
-transformers
-accelerate
-bitsandbytes
-sentencepiece
-torch
-torchaudio
