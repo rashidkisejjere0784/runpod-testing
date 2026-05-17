@@ -27,10 +27,7 @@ RUN git clone https://github.com/coqui-ai/TTS /tmp/TTS \
     && rm -rf /tmp/TTS/.git
 
 # Install torch and runpod
-RUN uv pip install --system \
-    --index-url https://download.pytorch.org/whl/cu121 \
-    --extra-index-url https://pypi.org/simple \
-    torch torchaudio runpod
+RUN uv pip install --system runpod
 
 # Pre-download XTTS-v2 model at build time
 RUN python3 -c "from TTS.api import TTS; TTS('tts_models/multilingual/multi-dataset/xtts_v2')"
