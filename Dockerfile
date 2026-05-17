@@ -30,10 +30,10 @@ RUN git clone https://github.com/coqui-ai/TTS /tmp/TTS \
 RUN uv pip install runpod
 
 # Pre-download XTTS-v2 model at build time
-RUN python -c "from TTS.api import TTS; TTS('tts_models/multilingual/multi-dataset/xtts_v2')"
+RUN python3 -c "from TTS.api import TTS; TTS('tts_models/multilingual/multi-dataset/xtts_v2')"
 
 WORKDIR /app
 COPY . /app
 
 EXPOSE 8080
-CMD ["python", "tts_inference.py"]
+CMD ["python3", "tts_inference.py"]
